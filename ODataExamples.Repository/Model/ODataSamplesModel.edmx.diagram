@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="13fcb557f19243e1bba50f67c9adbdae" Name="Diagram1">
+        <EntityTypeShape EntityType="ODataSamplesModel.Address" Width="1.5" PointX="1.5" PointY="13.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ODataSamplesModel.Customer" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ODataSamplesModel.Order" Width="1.5" PointX="3" PointY="0.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ODataSamplesModel.OrderDetail" Width="1.5" PointX="5.25" PointY="6.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ODataSamplesModel.Phone" Width="1.5" PointX="3" PointY="18.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ODataSamplesModel.Product" Width="1.5" PointX="3" PointY="8.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ODataSamplesModel.ProductBrand" Width="1.5" PointX="0.75" PointY="9.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ODataSamplesModel.ProductImage" Width="1.5" PointX="5.25" PointY="11.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ODataSamplesModel.ProductOverview" Width="1.5" PointX="5.25" PointY="14.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ODataSamplesModel.ProductType" Width="1.5" PointX="0.75" PointY="5.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ODataSamplesModel.Specification" Width="1.5" PointX="8.25" PointY="9" IsExpanded="true" />
+        <EntityTypeShape EntityType="ODataSamplesModel.SpecificationType" Width="1.5" PointX="6" PointY="3.25" IsExpanded="true" />
+        <AssociationConnector Association="ODataSamplesModel.FK_Order_Customer" ManuallyRouted="false" />
+        <AssociationConnector Association="ODataSamplesModel.FK_Order_Customer1" ManuallyRouted="false" />
+        <AssociationConnector Association="ODataSamplesModel.FK_OrderDetail_Order" ManuallyRouted="false" />
+        <AssociationConnector Association="ODataSamplesModel.FK_OrderDetail_Product" ManuallyRouted="false" />
+        <AssociationConnector Association="ODataSamplesModel.FK_Product_ProductBrand" ManuallyRouted="false" />
+        <AssociationConnector Association="ODataSamplesModel.FK_Product_ProductType" ManuallyRouted="false" />
+        <AssociationConnector Association="ODataSamplesModel.FK_ProductImage_Product" ManuallyRouted="false" />
+        <AssociationConnector Association="ODataSamplesModel.FK_ProductOverview_Product" ManuallyRouted="false" />
+        <AssociationConnector Association="ODataSamplesModel.FK_Specification_Product" ManuallyRouted="false" />
+        <AssociationConnector Association="ODataSamplesModel.FK_Specification_SpecificationType" ManuallyRouted="false" />
+        <AssociationConnector Association="ODataSamplesModel.CustomerAddress" ManuallyRouted="false" />
+        <AssociationConnector Association="ODataSamplesModel.CustomerPhone" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
