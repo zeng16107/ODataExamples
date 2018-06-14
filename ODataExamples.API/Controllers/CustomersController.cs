@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
@@ -173,7 +174,7 @@ namespace ODataExamples.API.Controllers
                 await _db.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException ex) {
-                if (!_db.Customers.Any(c => c.Id == id)) {
+                if (!_db.Customers.Any(c => c.id == id)) {
                     return NotFound();
                 }
                 _tracker.TrackException(ex);
