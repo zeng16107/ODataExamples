@@ -160,8 +160,8 @@ namespace ODataExamples.API.Controllers
             // Attempt to find existing customer
             var dbCustomer = await _db.Customers.FindAsync(id);
             if (dbCustomer == null) {
-                // Requested customer already exists, return 409
-                return Conflict();
+                // Requested customer doesn't exist, return 404
+                return NotFound();
             }
 
             try {
@@ -421,7 +421,7 @@ namespace ODataExamples.API.Controllers
             // Attempt to find existing address
             var dbAddress = await _db.Addresses.FindAsync(id);
             if (dbAddress == null) {
-                // Requested address already exists, return 409
+                // Requested address doesn't exist, return 404
                 return NotFound();
             }
 

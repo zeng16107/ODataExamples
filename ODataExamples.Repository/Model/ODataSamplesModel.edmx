@@ -100,6 +100,7 @@
           <Property Name="brand" Type="int" />
           <Property Name="name" Type="nvarchar" MaxLength="100" />
           <Property Name="description" Type="nvarchar" MaxLength="255" />
+          <Property Name="upc" Type="nvarchar" MaxLength="15" />
           <Property Name="price" Type="decimal" Precision="18" Scale="0" />
           <Property Name="inserted_by" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="inserted_datetime" Type="datetime2" Precision="7" Nullable="false" />
@@ -431,7 +432,7 @@
           <Property Name="city" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="statecode" Type="String" MaxLength="2" FixedLength="true" Unicode="false" Nullable="false" />
           <Property Name="zipcode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="inserted_by" Type="String" Nullable="false" a:GetterAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+          <Property Name="inserted_by" Type="String" Nullable="false" a:GetterAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" MaxLength="50" Unicode="true" FixedLength="false" />
           <Property Name="inserted_datetime" Type="DateTime" Nullable="false" Precision="7" a:GetterAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
           <Property Name="last_updated_by" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" a:GetterAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
           <Property Name="last_updated_datetime" Type="DateTime" Nullable="false" Precision="7" a:GetterAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
@@ -509,6 +510,7 @@
           <Property Name="brand" Type="Int32" />
           <Property Name="name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="description" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="upc" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
           <Property Name="price" Type="Decimal" Precision="18" Scale="0" />
           <Property Name="inserted_by" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" a:GetterAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
           <Property Name="inserted_datetime" Type="DateTime" Nullable="false" Precision="7" a:GetterAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
@@ -871,6 +873,7 @@
           <EntitySetMapping Name="Products">
             <EntityTypeMapping TypeName="ODataSamplesModel.Product">
               <MappingFragment StoreEntitySet="Product">
+                <ScalarProperty Name="upc" ColumnName="upc" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="type" ColumnName="type" />
                 <ScalarProperty Name="category" ColumnName="category" />

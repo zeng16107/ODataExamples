@@ -29,6 +29,7 @@ namespace ODataExamples.Repository.Model
         public Nullable<int> brand { get; set; }
         public string name { get; set; }
         public string description { get; set; }
+        public string upc { get; set; }
         public Nullable<decimal> price { get; set; }
         public string inserted_by { private get; set; }
         public System.DateTime inserted_datetime { private get; set; }

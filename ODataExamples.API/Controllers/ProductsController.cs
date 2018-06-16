@@ -6,6 +6,7 @@ using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
@@ -19,9 +20,9 @@ using ODataExamples.Repository.Model;
 namespace ODataExamples.API.Controllers
 {
     /// <summary>
-    /// Handles operations related to Customer Order data
+    /// Handles operations related to Product data
     /// </summary>
-    public class OrdersController : ODataController
+    public class ProductsController : ODataController
     {
         // EF Model for database interation(s)
         private readonly ODataSamplesEntities _db = new ODataSamplesEntities();
@@ -29,55 +30,55 @@ namespace ODataExamples.API.Controllers
         // Telemetry tracker to write exceptions to App Insights
         private readonly TelemetryTracker _tracker = new TelemetryTracker();
 
-        #region Orders
+        #region Products
         
         #region GETs
 
-        // GET: orders
-        /// <summary>Query orders</summary>
+        // GET: produts
+        /// <summary>Query products</summary>
         /// <remarks>
         /// </remarks>
         /// <response code="200">Ok</response>
         /// <response code="404">Not Found</response>
         [EnableQuery(MaxExpansionDepth = 5)]
         [HttpGet]
-        [ODataRoute("orders")]
-        [ResponseType(typeof(IEnumerable<Order>))]
+        [ODataRoute("products")]
+        [ResponseType(typeof(IEnumerable<Product>))]
         public async Task<IHttpActionResult> Get() {
             try {
-                // Look for all orders - can be dangerous if no query properties are provided
-                var orders = _db.Orders;
-                if (!await orders.AnyAsync()){
+                // Look for all products - can be dangerous if no query properties are provided
+                var products = _db.Products;
+                if (!await products.AnyAsync()){
                     // Data not available, return 404
                     return NotFound();
                 }
-                // Return orders
-                return Ok(orders);
+                // Return products
+                return Ok(products);
             }
             catch (Exception ex){
                 return InternalServerError(ex);
             }
         }
 
-        // GET: orders(5)
-        /// <summary>Query order by id</summary>
-        /// <param name="id">Orders id</param>
+        // GET: products(5)
+        /// <summary>Query product by id</summary>
+        /// <param name="id">Product id</param>
         /// <response code="200">Ok</response>
         /// <response code="404">Not Found</response>
         [EnableQuery(MaxExpansionDepth = 5)]
         [HttpGet]
-        [ODataRoute("orders({id})")]
-        [ResponseType(typeof(Order))]
+        [ODataRoute("products({id})")]
+        [ResponseType(typeof(Product))]
         public async Task<IHttpActionResult> Get([FromODataUri] int id){
             try{
-                // Attempt to find order
-                var order = await _db.Orders.FindAsync(id);
-                if (order == null){
-                    // Order not found, return 404
+                // Attempt to find product
+                var product = await _db.Products.FindAsync(id);
+                if (product == null){
+                    // Prodcut not found, return 404
                     return NotFound();
                 }
-                // Return order to caller
-                return Ok(order);
+                // Return product to caller
+                return Ok(product);
             }
             catch (Exception ex){
                 return InternalServerError(ex);
@@ -88,8 +89,8 @@ namespace ODataExamples.API.Controllers
 
         #region POST
 
-        /// <summary>Create a new order</summary>
-        /// <param name="order"></param>
+        /// <summary>Create a new product</summary>
+        /// <param name="product"></param>
         /// <response code="200">Ok</response>
         /// <response code="400">Bad Request</response>
         /// <response code="409">Conflict</response>
@@ -97,7 +98,7 @@ namespace ODataExamples.API.Controllers
         [HttpPost]
         [ODataRoute("orders")]
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> Post([FromBody] Order order) {
+        public async Task<IHttpActionResult> Post([FromBody] Product product) {
             try{
                 // Ensure incoming request adheres to entity expectations
                 if (!ModelState.IsValid) {
@@ -105,27 +106,27 @@ namespace ODataExamples.API.Controllers
                     return BadRequest(ModelState);
                 }
 
-                // Check to see if incoming order already exists based on order number
-                var dbOrder = _db.Orders.Where(o => o.order_number == order.order_number);
-                if (dbOrder.Any()) {
-                    // Existing order exists, return 409
+                // Check to see if incoming product already exists based on upc
+                var dbProduct = _db.Products.Where(p => p.upc == product.upc);
+                if (dbProduct.Any()) {
+                    // Existing product exists, return 409
                     return Conflict();
                 }
 
                 // Write tattler values (just for illustration - tie in your authorized claim token for user)
-                order.inserted_datetime = DateTime.UtcNow;
-                order.inserted_by = "OData Examples API";
-                order.last_updated_datetime = DateTime.UtcNow;
-                order.last_updated_by = "OData Examples API";
+                product.inserted_datetime = DateTime.UtcNow;
+                product.inserted_by = "OData Examples API";
+                product.last_updated_datetime = DateTime.UtcNow;
+                product.last_updated_by = "OData Examples API";
 
-                // Add order to collection
-                _db.Orders.Add(order);
+                // Add product to collection
+                _db.Products.Add(product);
 
                 // Commit creation to database
                 await _db.SaveChangesAsync();
 
-                // Return newly added order to caller
-                return Created(order);
+                // Return newly added product to caller
+                return Created(product);
             }
             catch (Exception ex) {
                 //Send exception detail to insights
@@ -138,18 +139,18 @@ namespace ODataExamples.API.Controllers
 
         #region PATCH
 
-        /// <summary>Patch existing order</summary>
-        /// <param name="id">Order Id</param>
-        /// <param name="orderDelta">Order delta</param>
+        /// <summary>Patch existing product</summary>
+        /// <param name="id">Product Id</param>
+        /// <param name="productDelta">Product delta</param>
         /// <response code="200">Ok</response>
         /// <response code="400">Bad Request</response>
         /// <response code="409">Conflict</response>
         [AcceptVerbs("PATCH", "MERGE")]
         [EnableQuery]
         [HttpPatch]
-        [ODataRoute("orders({id})")]
+        [ODataRoute("products({id})")]
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> Patch([FromODataUri] int id, [FromBody] Delta<Order> orderDelta) {
+        public async Task<IHttpActionResult> Patch([FromODataUri] int id, [FromBody] Delta<Product> productDelta) {
 
             // Ensure incoming request adheres to entity expectations
             if (!ModelState.IsValid) {
@@ -157,20 +158,20 @@ namespace ODataExamples.API.Controllers
                 return BadRequest(ModelState);
             }
 
-            // Attempt to find existing address
-            var dbOrder = await _db.Orders.FindAsync(id);
-            if (dbOrder == null) {
-                // Requested address already exists, return 409
-                return Conflict();
+            // Attempt to find existing product
+            var dbProduct = await _db.Products.FindAsync(id);
+            if (dbProduct == null) {
+                // Requested product doesn't exist, return 404
+                return NotFound();
             }
 
             try {
                 // Update tattler values
-                dbOrder.last_updated_datetime = DateTime.UtcNow;
-                dbOrder.last_updated_by = "OData Examples API";
+                dbProduct.last_updated_datetime = DateTime.UtcNow;
+                dbProduct.last_updated_by = "OData Examples API";
 
                 // Issue Patch to existing record
-                orderDelta.Patch(dbOrder);
+                productDelta.Patch(dbProduct);
 
                 // Commit change to database
                 await _db.SaveChangesAsync();
@@ -180,19 +181,19 @@ namespace ODataExamples.API.Controllers
                 _tracker.TrackException(ex);
                 return InternalServerError(ex);
             }
-            // Return updated order record to caller
-            return Updated(dbOrder);
+            // Return updated product record to caller
+            return Updated(dbProduct);
         }
 
         #endregion
 
         #region PUT
-        // PUT: orders(5)
+        // PUT: products(5)
         /// <summary>
-        /// Overwrite existing order
+        /// Overwrite existing product
         /// </summary>
         /// <param name="id"></param>
-        /// <param name="order"></param>
+        /// <param name="product"></param>
         /// <response code="200">Ok</response>
         /// <response code="400">Bad Request</response>
         /// <response code="404">Not Found</response>
@@ -201,24 +202,24 @@ namespace ODataExamples.API.Controllers
         [AcceptVerbs("PUT")]
         [EnableQuery]
         [HttpPut]
-        [ODataRoute("orders({id})")]
+        [ODataRoute("products({id})")]
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> Put([FromODataUri] int id, [FromBody] Order order) {
+        public async Task<IHttpActionResult> Put([FromODataUri] int id, [FromBody] Product product) {
 
-            // Attempt to find existing order
-            var dbOrder = _db.Orders.Find(id);
-            if (dbOrder == null) {
-                // Requested order not found, return 404
+            // Attempt to find existing product
+            var dbProduct = _db.Products.Find(id);
+            if (dbProduct == null) {
+                // Requested product not found, return 404
                 return NotFound();
             }
 
             try {
                 // Update tattler values (just for illustration - tie in your authorized claim token for user)
-                order.last_updated_datetime = DateTime.UtcNow;
-                order.last_updated_by = "OData Examples API";
+                product.last_updated_datetime = DateTime.UtcNow;
+                product.last_updated_by = "OData Examples API";
 
-                // Replace customer data
-                dbOrder = order;
+                // Replace product data
+                dbProduct = product;
 
                 // Commit change to database
                 await _db.SaveChangesAsync();
@@ -234,35 +235,35 @@ namespace ODataExamples.API.Controllers
                 _tracker.TrackException(ex);
                 return InternalServerError(ex);
             }
-            return Updated(dbOrder);
+            return Updated(dbProduct);
         }
         #endregion
 
         #region DELETE
 
-        // DELETE: orders(5)
-        /// <summary>Delete order</summary>
+        // DELETE: products(5)
+        /// <summary>Delete product</summary>
         /// <remarks>
         /// </remarks>
-        /// <param name="id">The order id</param>
+        /// <param name="id">The product id</param>
         /// <response code="204">No Content</response>
         /// <response code="401">Unauthorized</response>
         /// <response code="404">Not Found</response>
         [EnableQuery]
         [HttpDelete]
-        [ODataRoute("orders({id})")]
+        [ODataRoute("products({id})")]
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> Delete([FromODataUri] int id) {
             try {
-                // Attempt to find existing order
-                var dbOrder = await _db.Orders.FindAsync(id);
-                if (dbOrder == null) {
-                    // Requested order not found, return 404
+                // Attempt to find existing product
+                var dbProduct = await _db.Products.FindAsync(id);
+                if (dbProduct == null) {
+                    // Requested product not found, return 404
                     return NotFound();
                 }
 
-                // Remove order record
-                _db.Orders.Remove(dbOrder);
+                // Remove product record
+                _db.Products.Remove(dbProduct);
 
                 // Commit change to database
                 await _db.SaveChangesAsync();
