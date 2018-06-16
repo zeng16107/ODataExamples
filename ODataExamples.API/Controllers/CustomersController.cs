@@ -25,9 +25,11 @@ namespace ODataExamples.API.Controllers
         // Telemetry tracker to write exceptions to App Insights
         private readonly TelemetryTracker _tracker = new TelemetryTracker();
 
-        #region GETs
+        #region Base Customer
 
-        // GET: custoemrs
+        #region GET Customers
+
+        // GET: customers
         /// <summary>Query customers</summary>
         /// <remarks>
         /// </remarks>
@@ -37,7 +39,7 @@ namespace ODataExamples.API.Controllers
         [HttpGet]
         [ODataRoute("customers")]
         [ResponseType(typeof(IEnumerable<Customer>))]
-        public async Task<IHttpActionResult> Get() {
+        public async Task<IHttpActionResult> GetCustomers() {
             try {
                 var customers = _db.Customers;
                 if (!await customers.AnyAsync()){
@@ -59,13 +61,13 @@ namespace ODataExamples.API.Controllers
         [HttpGet]
         [ODataRoute("customers({id})")]
         [ResponseType(typeof(Customer))]
-        public async Task<IHttpActionResult> Get([FromODataUri] int id){
+        public async Task<IHttpActionResult> GetCustomer([FromODataUri] int id){
             try{
-                var customer = _db.Customers.Where(c => c.id == id);
-                if (!await customer.AnyAsync()){
+                var customer = await _db.Customers.FindAsync(id);
+                if (customer == null){
                     return NotFound();
                 }
-                return Ok(SingleResult.Create(customer));
+                return Ok(customer);
             }
             catch (Exception ex){
                 return InternalServerError(ex);
@@ -74,7 +76,7 @@ namespace ODataExamples.API.Controllers
 
         #endregion
 
-        #region POST
+        #region POST Customer
 
         /// <summary>Create a new customer</summary>
         /// <param name="customer"></param>
@@ -85,7 +87,7 @@ namespace ODataExamples.API.Controllers
         [HttpPost]
         [ODataRoute("customers")]
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> Post([FromBody] Customer customer) {
+        public async Task<IHttpActionResult> PostCustomer([FromBody] Customer customer) {
             try{
                 if (!ModelState.IsValid) {
                     return BadRequest(ModelState);
@@ -109,9 +111,9 @@ namespace ODataExamples.API.Controllers
 
         #endregion
 
-        #region PATCH
+        #region PATCH Customer
 
-        /// <summary>Create a new customer</summary>
+        /// <summary>Update customer</summary>
         /// <param name="id">Customer Id</param>
         /// <param name="customerDelta">Customer delta</param>
         /// <response code="200">Ok</response>
@@ -120,9 +122,9 @@ namespace ODataExamples.API.Controllers
         [AcceptVerbs("PATCH", "MERGE")]
         [EnableQuery]
         [HttpPatch]
-        [ODataRoute("customers")]
+        [ODataRoute("customers({id})")]
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> Patch([FromODataUri] int id, [FromBody] Delta<Customer> customerDelta) {
+        public async Task<IHttpActionResult> PatchCustomer([FromODataUri] int id, [FromBody] Delta<Customer> customerDelta) {
 
             if (!ModelState.IsValid) {
                 return BadRequest(ModelState);
@@ -147,8 +149,11 @@ namespace ODataExamples.API.Controllers
 
         #endregion
 
-        #region PUT
-        /// <summary>customer
+        #region PUT Customer
+
+        // PUT: customers(5)
+        /// <summary>
+        /// Overwrite customer
         /// </summary>
         /// <param name="id"></param>
         /// <param name="customer"></param>
@@ -162,9 +167,9 @@ namespace ODataExamples.API.Controllers
         [HttpPut]
         [ODataRoute("customers({id})")]
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> Put([FromODataUri] int id, [FromBody] Customer customer) {
+        public async Task<IHttpActionResult> PutCustomer([FromODataUri] int id, [FromBody] Customer customer) {
 
-            var dbCustomer = _db.Customers.Find(id);
+            var dbCustomer = await _db.Customers.FindAsync(id);
             if (dbCustomer == null) {
                 return NotFound();
             }
@@ -188,7 +193,7 @@ namespace ODataExamples.API.Controllers
         }
         #endregion
 
-        #region DELETE
+        #region DELETE Customer
 
         // DELETE: customers(5)
         /// <summary>Delete customer</summary>
@@ -198,12 +203,11 @@ namespace ODataExamples.API.Controllers
         /// <response code="204">No Content</response>
         /// <response code="401">Unauthorized</response>
         /// <response code="404">Not Found</response>
-        //[Authorize(Roles = "NationalPurchasing,ZonePurchasing,DivisionPurchasing")]
         [EnableQuery]
         [HttpDelete]
         [ODataRoute("customers({id})")]
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> Delete([FromODataUri] int id) {
+        public async Task<IHttpActionResult> DeleteCustomer([FromODataUri] int id) {
             try {
                 var dbCustomer = await _db.Customers.FindAsync(id);
                 if (dbCustomer == null) {
@@ -219,6 +223,215 @@ namespace ODataExamples.API.Controllers
                 return InternalServerError(ex);
             }
         }
+
+        #endregion
+
+        #endregion
+
+        #region Customer Address
+
+        #region GET Customer Addresses
+
+        // GET: addresses
+        /// <summary>Query customer address</summary>
+        /// <remarks>
+        /// </remarks>
+        /// <response code="200">Ok</response>
+        /// <response code="404">Not Found</response>
+        [EnableQuery(MaxExpansionDepth = 5)]
+        [HttpGet]
+        [ODataRoute("addresses")]
+        [ResponseType(typeof(IEnumerable<Address>))]
+        public async Task<IHttpActionResult> GetCustomerAddresses() {
+            try {
+                var addresses = _db.Addresses;
+                if (!await addresses.AnyAsync()){
+                    return NotFound();
+                }
+                return Ok(addresses);
+            }
+            catch (Exception ex){
+                return InternalServerError(ex);
+            }
+        }
+
+        // GET: addresses(1)
+        /// <summary>Query customer address</summary>
+        /// <param name="id">Address id</param>
+        /// <remarks>
+        /// </remarks>
+        /// <response code="200">Ok</response>
+        /// <response code="404">Not Found</response>
+        [EnableQuery(MaxExpansionDepth = 5)]
+        [HttpGet]
+        [ODataRoute("addresses({id})")]
+        [ResponseType(typeof(IEnumerable<Address>))]
+        public async Task<IHttpActionResult> GetCustomerAddress([FromODataUri] int id) {
+            try {
+                var customerAddress = await _db.Addresses.FindAsync(id);
+                if (customerAddress == null){
+                    return NotFound();
+                }
+                return Ok(customerAddress);
+            }
+            catch (Exception ex){
+                return InternalServerError(ex);
+            }
+        }
+
+        #endregion
+
+        #region POST Customer Address
+
+        /// POST: addresses
+        /// <summary>Create a new customer address</summary>
+        /// <param name="address">Customer Address</param>
+        /// <response code="200">Ok</response>
+        /// <response code="400">Bad Request</response>
+        /// <response code="409">Conflict</response>
+        [EnableQuery]
+        [HttpPost]
+        [ODataRoute("addresses")]
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> PostCustomerAddress([FromBody] Address address) {
+            try{
+                if (!ModelState.IsValid) {
+                    return BadRequest(ModelState);
+                }
+
+                var dbAddress = _db.Addresses.Where(c => c.street_address_1 == address.street_address_1);
+                if (dbAddress.Any()) {
+                    return Conflict();
+                }
+
+                _db.Addresses.Add(address);
+                await _db.SaveChangesAsync();
+                return Created(dbAddress);
+            }
+            catch (Exception ex) {
+                //Send exception detail to insights
+                _tracker.TrackException(ex);
+                return InternalServerError(ex);
+            }
+        }
+
+        #endregion
+
+        #region PATCH Customer Address
+
+        /// PATCH: addresses({addressId})
+        /// <summary>Update customer's address</summary>
+        /// <param name="id">Address Id</param>
+        /// <param name="addressDelta">Address delta</param>
+        /// <response code="200">Ok</response>
+        /// <response code="400">Bad Request</response>
+        /// <response code="409">Conflict</response>
+        [AcceptVerbs("PATCH", "MERGE")]
+        [EnableQuery]
+        [HttpPatch]
+        [ODataRoute("addresses({id})")]
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> PatchCustomerAddress([FromODataUri] int id, [FromBody] Delta<Address> addressDelta) {
+
+            if (!ModelState.IsValid) {
+                return BadRequest(ModelState);
+            }
+
+            var dbAddress = await _db.Addresses.FindAsync(id);
+            if (dbAddress == null) {
+                return NotFound();
+            }
+
+            try {
+                addressDelta.Patch(dbAddress);
+                await _db.SaveChangesAsync();
+            }
+            catch (Exception ex) {
+                //Send exception detail to insights
+                _tracker.TrackException(ex);
+                return InternalServerError(ex);
+            }
+            return Updated(dbAddress);
+        }
+
+        #endregion
+
+        #region PUT Customer Address
+
+        /// PUT: addresses({addressId})
+        /// <summary>
+        /// Overwrite customer address
+        /// </summary>
+        /// <param name="id">Address Id</param>
+        /// <param name="address">Address</param>
+        /// <response code="200">Ok</response>
+        /// <response code="400">Bad Request</response>
+        /// <response code="404">Not Found</response>
+        /// <response code="409">Conflict</response>
+        /// <returns></returns>
+        [AcceptVerbs("PUT")]
+        [EnableQuery]
+        [HttpPut]
+        [ODataRoute("addresses({id})")]
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> PutCustomerAddress([FromODataUri] int id, [FromBody] Address address) {
+
+            var dbAddress = await _db.Addresses.FindAsync(id);
+            if (dbAddress == null) {
+                return NotFound();
+            }
+
+            try {
+                dbAddress = address;
+                await _db.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException ex) {
+                if (!_db.Addresses.Any(c => c.id == id)) {
+                    return NotFound();
+                }
+                _tracker.TrackException(ex);
+                return InternalServerError(ex);
+            }
+            catch (Exception ex) {
+                _tracker.TrackException(ex);
+                return InternalServerError(ex);
+            }
+            return Updated(dbAddress);
+        }
+        #endregion
+
+        #region DELETE Customer Address
+
+        // DELETE: addresses(5)
+        /// <summary>Delete address</summary>
+        /// <remarks>
+        /// </remarks>
+        /// <param name="id">The address id</param>
+        /// <response code="204">No Content</response>
+        /// <response code="401">Unauthorized</response>
+        /// <response code="404">Not Found</response>
+        [EnableQuery]
+        [HttpDelete]
+        [ODataRoute("addresses({id})")]
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> DeleteCustomerAddress([FromODataUri] int id) {
+            try {
+                var dbCustomer = await _db.Addresses.FindAsync(id);
+                if (dbCustomer == null) {
+                    return NotFound();
+                }
+                _db.Addresses.Remove(dbCustomer);
+                await _db.SaveChangesAsync();
+                return StatusCode(HttpStatusCode.NoContent);
+            }
+            catch (Exception ex) {
+                //Send exception detail to insights
+                _tracker.TrackException(ex);
+                return InternalServerError(ex);
+            }
+        }
+
+        #endregion
 
         #endregion
 

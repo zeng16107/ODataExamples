@@ -20,7 +20,9 @@ namespace ODataExamples.API
             apiBuilder.EnableLowerCamelCase();
 
             // When adding new controllers, map in the ODataRoute paths here
+            apiBuilder.EntitySet<Address>("addresses");
             apiBuilder.EntitySet<Customer>("customers");
+            apiBuilder.EntitySet<Order>("orders");
 
             // Apply OData model/mappings
             config.Count().Filter().OrderBy().Expand().Select().MaxTop(null);
