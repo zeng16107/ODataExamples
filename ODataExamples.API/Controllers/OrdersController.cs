@@ -1,4 +1,6 @@
-﻿using System;
+﻿#region Using
+
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
@@ -11,6 +13,8 @@ using System.Web.OData;
 using System.Web.OData.Routing;
 using ODataExamples.API.Classes;
 using ODataExamples.Repository.Model;
+
+#endregion
 
 namespace ODataExamples.API.Controllers
 {
@@ -25,6 +29,8 @@ namespace ODataExamples.API.Controllers
         // Telemetry tracker to write exceptions to App Insights
         private readonly TelemetryTracker _tracker = new TelemetryTracker();
 
+        #region Orders
+        
         #region GETs
 
         // GET: orders
@@ -120,7 +126,7 @@ namespace ODataExamples.API.Controllers
         [AcceptVerbs("PATCH", "MERGE")]
         [EnableQuery]
         [HttpPatch]
-        [ODataRoute("orders")]
+        [ODataRoute("orders({id})")]
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> Patch([FromODataUri] int id, [FromBody] Delta<Order> orderDelta) {
 
@@ -220,6 +226,8 @@ namespace ODataExamples.API.Controllers
                 return InternalServerError(ex);
             }
         }
+
+        #endregion
 
         #endregion
 

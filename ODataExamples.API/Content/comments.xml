@@ -4,6 +4,97 @@
         <name>ODataExamples.API</name>
     </assembly>
     <members>
+        <member name="T:ODataExamples.API.Classes.ReferenceHelper">
+            <summary>
+            Assist in created assocation relationship references
+            </summary>
+        </member>
+        <member name="M:ODataExamples.API.Classes.ReferenceHelper.GetKeyFromUri``1(System.Net.Http.HttpRequestMessage,System.Uri)">
+            <summary>
+              Retrive key property from OData $ref query
+            </summary>
+            <typeparam name="TKey"></typeparam>
+            <param name="request"></param>
+            <param name="uri"></param>
+            <returns></returns>
+        </member>
+        <member name="T:ODataExamples.API.Controllers.AddressesController">
+            <summary>
+            Handles operations related to Address data
+            </summary>
+        </member>
+        <member name="M:ODataExamples.API.Controllers.AddressesController.GetCustomerAddresses">
+            <summary>Query customer address</summary>
+            <remarks>
+            </remarks>
+            <response code="200">Ok</response>
+            <response code="404">Not Found</response>
+        </member>
+        <member name="M:ODataExamples.API.Controllers.AddressesController.GetCustomerAddress(System.Int32)">
+            <summary>Query customer address</summary>
+            <param name="id">Address id</param>
+            <remarks>
+            </remarks>
+            <response code="200">Ok</response>
+            <response code="404">Not Found</response>
+        </member>
+        <member name="M:ODataExamples.API.Controllers.AddressesController.PostCustomerAddress(ODataExamples.Repository.Model.Address)">
+            POST: addresses
+            <summary>Create a new customer address</summary>
+            <param name="address">Customer Address</param>
+            <response code="200">Ok</response>
+            <response code="400">Bad Request</response>
+            <response code="409">Conflict</response>
+        </member>
+        <member name="M:ODataExamples.API.Controllers.AddressesController.PatchCustomerAddress(System.Int32,System.Web.OData.Delta{ODataExamples.Repository.Model.Address})">
+            PATCH: addresses({addressId})
+            <summary>Update customer's address</summary>
+            <param name="id">Address Id</param>
+            <param name="addressDelta">Address delta</param>
+            <response code="200">Ok</response>
+            <response code="400">Bad Request</response>
+            <response code="409">Conflict</response>
+        </member>
+        <member name="M:ODataExamples.API.Controllers.AddressesController.PutCustomerAddress(System.Int32,ODataExamples.Repository.Model.Address)">
+            PUT: addresses({addressId})
+            <summary>
+            Overwrite customer address
+            </summary>
+            <param name="id">Address Id</param>
+            <param name="address">Address</param>
+            <response code="200">Ok</response>
+            <response code="400">Bad Request</response>
+            <response code="404">Not Found</response>
+            <response code="409">Conflict</response>
+            <returns></returns>
+        </member>
+        <member name="M:ODataExamples.API.Controllers.AddressesController.DeleteCustomerAddress(System.Int32)">
+            <summary>Delete address</summary>
+            <remarks>
+            </remarks>
+            <param name="id">The address id</param>
+            <response code="204">No Content</response>
+            <response code="401">Unauthorized</response>
+            <response code="404">Not Found</response>
+        </member>
+        <member name="M:ODataExamples.API.Controllers.AddressesController.CreateRef(System.Int32,System.String,System.Uri)">
+            <summary>
+              Create reference between address and customer
+            </summary>
+            <param name="key"></param>
+            <param name="navigationProperty"></param>
+            <param name="reference"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ODataExamples.API.Controllers.AddressesController.DeleteRef(System.Int32,System.String,System.String)">
+            <summary>
+              Remove reference between address and customer
+            </summary>
+            <param name="key"></param>
+            <param name="navigationProperty"></param>
+            <param name="relatedKey"></param>
+            <returns></returns>
+        </member>
         <member name="T:ODataExamples.API.Controllers.CustomersController">
             <summary>
             Handles operations related to Customer data
@@ -58,59 +149,23 @@
             <response code="401">Unauthorized</response>
             <response code="404">Not Found</response>
         </member>
-        <member name="M:ODataExamples.API.Controllers.CustomersController.GetCustomerAddresses">
-            <summary>Query customer address</summary>
-            <remarks>
-            </remarks>
-            <response code="200">Ok</response>
-            <response code="404">Not Found</response>
-        </member>
-        <member name="M:ODataExamples.API.Controllers.CustomersController.GetCustomerAddress(System.Int32)">
-            <summary>Query customer address</summary>
-            <param name="id">Address id</param>
-            <remarks>
-            </remarks>
-            <response code="200">Ok</response>
-            <response code="404">Not Found</response>
-        </member>
-        <member name="M:ODataExamples.API.Controllers.CustomersController.PostCustomerAddress(ODataExamples.Repository.Model.Address)">
-            POST: addresses
-            <summary>Create a new customer address</summary>
-            <param name="address">Customer Address</param>
-            <response code="200">Ok</response>
-            <response code="400">Bad Request</response>
-            <response code="409">Conflict</response>
-        </member>
-        <member name="M:ODataExamples.API.Controllers.CustomersController.PatchCustomerAddress(System.Int32,System.Web.OData.Delta{ODataExamples.Repository.Model.Address})">
-            PATCH: addresses({addressId})
-            <summary>Update customer's address</summary>
-            <param name="id">Address Id</param>
-            <param name="addressDelta">Address delta</param>
-            <response code="200">Ok</response>
-            <response code="400">Bad Request</response>
-            <response code="409">Conflict</response>
-        </member>
-        <member name="M:ODataExamples.API.Controllers.CustomersController.PutCustomerAddress(System.Int32,ODataExamples.Repository.Model.Address)">
-            PUT: addresses({addressId})
+        <member name="M:ODataExamples.API.Controllers.CustomersController.CreateRef(System.Int32,System.String,System.Uri)">
             <summary>
-            Overwrite customer address
+              Create reference between customer and address
             </summary>
-            <param name="id">Address Id</param>
-            <param name="address">Address</param>
-            <response code="200">Ok</response>
-            <response code="400">Bad Request</response>
-            <response code="404">Not Found</response>
-            <response code="409">Conflict</response>
+            <param name="key"></param>
+            <param name="navigationProperty"></param>
+            <param name="reference"></param>
             <returns></returns>
         </member>
-        <member name="M:ODataExamples.API.Controllers.CustomersController.DeleteCustomerAddress(System.Int32)">
-            <summary>Delete address</summary>
-            <remarks>
-            </remarks>
-            <param name="id">The address id</param>
-            <response code="204">No Content</response>
-            <response code="401">Unauthorized</response>
-            <response code="404">Not Found</response>
+        <member name="M:ODataExamples.API.Controllers.CustomersController.DeleteRef(System.Int32,System.String,System.String)">
+            <summary>
+              Remove reference between customer and address
+            </summary>
+            <param name="key"></param>
+            <param name="navigationProperty"></param>
+            <param name="relatedKey"></param>
+            <returns></returns>
         </member>
         <member name="T:ODataExamples.API.Controllers.OrdersController">
             <summary>
