@@ -24,10 +24,10 @@ namespace ODataExamples.Repository.Model
         public int customer_id { get; set; }
         public string order_number { get; set; }
         public int order_status { get; set; }
-        public string inserted_by { get; set; }
-        public System.DateTime inserted_datetime { get; set; }
-        public string last_updated_by { get; set; }
-        public System.DateTime last_updated_datetime { get; set; }
+        public string inserted_by { private get; set; }
+        public System.DateTime inserted_datetime { private get; set; }
+        public string last_updated_by { private get; set; }
+        public System.DateTime last_updated_datetime { private get; set; }
     
         public virtual Customer Customer { get; set; }
         public virtual Customer Customer1 { get; set; }

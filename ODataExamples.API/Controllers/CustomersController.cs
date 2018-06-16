@@ -45,10 +45,13 @@ namespace ODataExamples.API.Controllers
         [ResponseType(typeof(IEnumerable<Customer>))]
         public async Task<IHttpActionResult> GetCustomers() {
             try {
+                // Look for all customers - can be dangerous if no query properties are provided
                 var customers = _db.Customers;
                 if (!await customers.AnyAsync()){
+                    // Data not available, return 404
                     return NotFound();
                 }
+                // Return customers
                 return Ok(customers);
             }
             catch (Exception ex){
@@ -67,10 +70,13 @@ namespace ODataExamples.API.Controllers
         [ResponseType(typeof(Customer))]
         public async Task<IHttpActionResult> GetCustomer([FromODataUri] int id){
             try{
+                // Attempt to find customer
                 var customer = await _db.Customers.FindAsync(id);
                 if (customer == null){
+                    // Customer not found, return 404
                     return NotFound();
                 }
+                // Return customer to caller
                 return Ok(customer);
             }
             catch (Exception ex){
@@ -93,17 +99,32 @@ namespace ODataExamples.API.Controllers
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> PostCustomer([FromBody] Customer customer) {
             try{
+                // Ensure incoming request adheres to entity expectations
                 if (!ModelState.IsValid) {
+                    // Something isn't right, return 400
                     return BadRequest(ModelState);
                 }
 
+                // Check to see if incoming customer already exists based on email address
                 var dbCustomer = _db.Customers.Where(o => o.email_address == customer.email_address);
                 if (dbCustomer.Any()) {
+                    // Existing customer exists, return 409
                     return Conflict();
                 }
 
+                // Write tattler values (just for illustration - tie in your authorized claim token for user)
+                customer.inserted_datetime = DateTime.UtcNow;
+                customer.inserted_by = "OData Examples API";
+                customer.last_updated_datetime = DateTime.UtcNow;
+                customer.last_updated_by = "OData Examples API";
+
+                // Add customer to collection
                 _db.Customers.Add(customer);
+
+                // Commit creation to database
                 await _db.SaveChangesAsync();
+
+                // Return newly added customer to caller
                 return Created(customer);
             }
             catch (Exception ex) {
@@ -130,17 +151,27 @@ namespace ODataExamples.API.Controllers
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> PatchCustomer([FromODataUri] int id, [FromBody] Delta<Customer> customerDelta) {
 
+            // Ensure incoming request adheres to entity expectations
             if (!ModelState.IsValid) {
+                // Something isn't right, return 400
                 return BadRequest(ModelState);
             }
 
+            // Attempt to find existing customer
             var dbCustomer = await _db.Customers.FindAsync(id);
             if (dbCustomer == null) {
+                // Requested customer already exists, return 409
                 return Conflict();
             }
 
             try {
+                // Update date tattler value
+                dbCustomer.last_updated_datetime = DateTime.UtcNow;
+
+                // Issue Patch to existing record
                 customerDelta.Patch(dbCustomer);
+                
+                // Commit change to database
                 await _db.SaveChangesAsync();
             }
             catch (Exception ex) {
@@ -148,6 +179,7 @@ namespace ODataExamples.API.Controllers
                 _tracker.TrackException(ex);
                 return InternalServerError(ex);
             }
+            // Return updated customer record to caller
             return Updated(dbCustomer);
         }
 
@@ -173,13 +205,22 @@ namespace ODataExamples.API.Controllers
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> PutCustomer([FromODataUri] int id, [FromBody] Customer customer) {
 
+            // Attempt to find existing customer
             var dbCustomer = await _db.Customers.FindAsync(id);
             if (dbCustomer == null) {
+                // Requested customer not found, return 404
                 return NotFound();
             }
 
             try {
+                // Update tattler values (just for illustration - tie in your authorized claim token for user)
+                customer.last_updated_datetime = DateTime.UtcNow;
+                customer.last_updated_by = "OData Examples API";
+
+                // Replace customer data
                 dbCustomer = customer;
+
+                // Commit change to database
                 await _db.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException ex) {
@@ -193,6 +234,7 @@ namespace ODataExamples.API.Controllers
                 _tracker.TrackException(ex);
                 return InternalServerError(ex);
             }
+            // Return updated customer to caller
             return Updated(dbCustomer);
         }
         #endregion
@@ -213,12 +255,20 @@ namespace ODataExamples.API.Controllers
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> DeleteCustomer([FromODataUri] int id) {
             try {
+                // Attempt to find existing customer
                 var dbCustomer = await _db.Customers.FindAsync(id);
                 if (dbCustomer == null) {
+                    // Requested customer not found, return 404
                     return NotFound();
                 }
+
+                // Remove customer record
                 _db.Customers.Remove(dbCustomer);
+
+                // Commit change to database
                 await _db.SaveChangesAsync();
+
+                // Return successful deletion code (204)
                 return StatusCode(HttpStatusCode.NoContent);
             }
             catch (Exception ex) {

@@ -19,7 +19,7 @@ using ODataExamples.Repository.Model;
 namespace ODataExamples.API.Controllers
 {
     /// <summary>
-    /// Handles operations related to Order data
+    /// Handles operations related to Customer Order data
     /// </summary>
     public class OrdersController : ODataController
     {
@@ -45,10 +45,13 @@ namespace ODataExamples.API.Controllers
         [ResponseType(typeof(IEnumerable<Order>))]
         public async Task<IHttpActionResult> Get() {
             try {
+                // Look for all orders - can be dangerous if no query properties are provided
                 var orders = _db.Orders;
                 if (!await orders.AnyAsync()){
+                    // Data not available, return 404
                     return NotFound();
                 }
+                // Return orders
                 return Ok(orders);
             }
             catch (Exception ex){
@@ -67,11 +70,14 @@ namespace ODataExamples.API.Controllers
         [ResponseType(typeof(Order))]
         public async Task<IHttpActionResult> Get([FromODataUri] int id){
             try{
-                var orders = _db.Orders.Where(o => o.id == id);
-                if (!await orders.AnyAsync()){
+                // Attempt to find order
+                var order = _db.Orders.FindAsync(id);
+                if (order == null){
+                    // Address not found, return 404
                     return NotFound();
                 }
-                return Ok(SingleResult.Create(orders));
+                // Return order to caller
+                return Ok(order);
             }
             catch (Exception ex){
                 return InternalServerError(ex);
@@ -93,17 +99,32 @@ namespace ODataExamples.API.Controllers
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> Post([FromBody] Order order) {
             try{
+                // Ensure incoming request adheres to entity expectations
                 if (!ModelState.IsValid) {
+                    // Something isn't right, return 400
                     return BadRequest(ModelState);
                 }
 
+                // Check to see if incoming order already exists based on order number
                 var dbOrder = _db.Orders.Where(o => o.order_number == order.order_number);
                 if (dbOrder.Any()) {
+                    // Existing order exists, return 409
                     return Conflict();
                 }
 
+                // Write tattler values (just for illustration - tie in your authorized claim token for user)
+                order.inserted_datetime = DateTime.UtcNow;
+                order.inserted_by = "OData Examples API";
+                order.last_updated_datetime = DateTime.UtcNow;
+                order.last_updated_by = "OData Examples API";
+
+                // Add order to collection
                 _db.Orders.Add(order);
+
+                // Commit creation to database
                 await _db.SaveChangesAsync();
+
+                // Return newly added order to caller
                 return Created(order);
             }
             catch (Exception ex) {
@@ -130,17 +151,28 @@ namespace ODataExamples.API.Controllers
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> Patch([FromODataUri] int id, [FromBody] Delta<Order> orderDelta) {
 
+            // Ensure incoming request adheres to entity expectations
             if (!ModelState.IsValid) {
+                // Something isn't right, return 400
                 return BadRequest(ModelState);
             }
 
+            // Attempt to find existing address
             var dbOrder = await _db.Orders.FindAsync(id);
             if (dbOrder == null) {
+                // Requested address already exists, return 409
                 return Conflict();
             }
 
             try {
+                // Update tattler values
+                dbOrder.last_updated_datetime = DateTime.UtcNow;
+                dbOrder.last_updated_by = "OData Examples API";
+
+                // Issue Patch to existing record
                 orderDelta.Patch(dbOrder);
+
+                // Commit change to database
                 await _db.SaveChangesAsync();
             }
             catch (Exception ex) {
@@ -148,6 +180,7 @@ namespace ODataExamples.API.Controllers
                 _tracker.TrackException(ex);
                 return InternalServerError(ex);
             }
+            // Return updated order record to caller
             return Updated(dbOrder);
         }
 
@@ -172,13 +205,22 @@ namespace ODataExamples.API.Controllers
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> Put([FromODataUri] int id, [FromBody] Order order) {
 
+            // Attempt to find existing order
             var dbOrder = _db.Orders.Find(id);
             if (dbOrder == null) {
+                // Requested order not found, return 404
                 return NotFound();
             }
 
             try {
+                // Update tattler values (just for illustration - tie in your authorized claim token for user)
+                order.last_updated_datetime = DateTime.UtcNow;
+                order.last_updated_by = "OData Examples API";
+
+                // Replace customer data
                 dbOrder = order;
+
+                // Commit change to database
                 await _db.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException ex) {
@@ -212,12 +254,20 @@ namespace ODataExamples.API.Controllers
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> Delete([FromODataUri] int id) {
             try {
+                // Attempt to find existing order
                 var dbOrder = await _db.Orders.FindAsync(id);
                 if (dbOrder == null) {
+                    // Requested order not found, return 404
                     return NotFound();
                 }
+
+                // Remove order record
                 _db.Orders.Remove(dbOrder);
+
+                // Commit change to database
                 await _db.SaveChangesAsync();
+
+                // Return successful deletion code (204)
                 return StatusCode(HttpStatusCode.NoContent);
             }
             catch (Exception ex) {

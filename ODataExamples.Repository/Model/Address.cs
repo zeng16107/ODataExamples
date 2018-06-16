@@ -27,10 +27,10 @@ namespace ODataExamples.Repository.Model
         public string city { get; set; }
         public string statecode { get; set; }
         public string zipcode { get; set; }
-        public System.DateTime inserted_by { get; set; }
-        public System.DateTime inserted_datetime { get; set; }
-        public string last_updated_by { get; set; }
-        public System.DateTime last_updated_datetime { get; set; }
+        public string inserted_by { private get; set; }
+        public System.DateTime inserted_datetime { private get; set; }
+        public string last_updated_by { private get; set; }
+        public System.DateTime last_updated_datetime { private get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Customer> Customers { get; set; }

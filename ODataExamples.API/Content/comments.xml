@@ -55,7 +55,7 @@
             <response code="400">Bad Request</response>
             <response code="409">Conflict</response>
         </member>
-        <member name="M:ODataExamples.API.Controllers.AddressesController.PutCustomerAddress(System.Int32,ODataExamples.Repository.Model.Address)">
+        <member name="M:ODataExamples.API.Controllers.AddressesController.Put(System.Int32,ODataExamples.Repository.Model.Address)">
             PUT: addresses({addressId})
             <summary>
             Overwrite customer address
@@ -169,7 +169,7 @@
         </member>
         <member name="T:ODataExamples.API.Controllers.OrdersController">
             <summary>
-            Handles operations related to Order data
+            Handles operations related to Customer Order data
             </summary>
         </member>
         <member name="M:ODataExamples.API.Controllers.OrdersController.Get">

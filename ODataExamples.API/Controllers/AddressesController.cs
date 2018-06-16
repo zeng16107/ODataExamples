@@ -45,10 +45,14 @@ namespace ODataExamples.API.Controllers
         [ResponseType(typeof(IEnumerable<Address>))]
         public async Task<IHttpActionResult> GetCustomerAddresses() {
             try {
+                // Look for all addresses - can be dangerous if no query properties are provided
                 var addresses = _db.Addresses;
                 if (!await addresses.AnyAsync()){
+                    // Data not available, return 404
                     return NotFound();
                 }
+                
+                // Return addresses
                 return Ok(addresses);
             }
             catch (Exception ex){
@@ -66,13 +70,16 @@ namespace ODataExamples.API.Controllers
         [EnableQuery(MaxExpansionDepth = 5)]
         [HttpGet]
         [ODataRoute("addresses({id})")]
-        [ResponseType(typeof(IEnumerable<Address>))]
+        [ResponseType(typeof(Address))]
         public async Task<IHttpActionResult> GetCustomerAddress([FromODataUri] int id) {
             try {
+                // Attempt to find customer
                 var customerAddress = await _db.Addresses.FindAsync(id);
                 if (customerAddress == null){
+                    // Address not found, return 404
                     return NotFound();
                 }
+                // Return customer to caller
                 return Ok(customerAddress);
             }
             catch (Exception ex){
@@ -96,17 +103,35 @@ namespace ODataExamples.API.Controllers
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> PostCustomerAddress([FromBody] Address address) {
             try{
+                // Ensure incoming request adheres to entity expectations
                 if (!ModelState.IsValid) {
+                    // Something isn't right, return 400
                     return BadRequest(ModelState);
                 }
 
-                var dbAddress = _db.Addresses.Where(c => c.street_address_1 == address.street_address_1);
+                // Check to see if incoming address already exists based on street address
+                // May need to accept multiple "dup" addresses depending on requirements
+                var dbAddress = _db.Addresses
+                    .Where(c => c.street_address_1 == address.street_address_1 &&
+                                c.street_address_2 == address.street_address_2);
                 if (dbAddress.Any()) {
+                    // Existing address exists, return 409
                     return Conflict();
                 }
 
+                // Write tattler values (just for illustration - tie in your authorized claim token for user)
+                address.inserted_datetime = DateTime.UtcNow;
+                address.inserted_by = "OData Examples API";
+                address.last_updated_datetime = DateTime.UtcNow;
+                address.last_updated_by = "OData Examples API";
+
+                // Add address to collection
                 _db.Addresses.Add(address);
+
+                // Commit creation to database
                 await _db.SaveChangesAsync();
+
+                // Return newly added customer to caller
                 return Created(dbAddress);
             }
             catch (Exception ex) {
@@ -134,17 +159,27 @@ namespace ODataExamples.API.Controllers
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> PatchCustomerAddress([FromODataUri] int id, [FromBody] Delta<Address> addressDelta) {
 
+            // Ensure incoming request adheres to entity expectations
             if (!ModelState.IsValid) {
+                // Something isn't right, return 400
                 return BadRequest(ModelState);
             }
 
+            // Attempt to find existing address
             var dbAddress = await _db.Addresses.FindAsync(id);
             if (dbAddress == null) {
+                // Requested address already exists, return 409
                 return NotFound();
             }
 
             try {
+                // Update date tattler value
+                dbAddress.last_updated_datetime = DateTime.UtcNow;
+
+                // Issue Patch to existing record
                 addressDelta.Patch(dbAddress);
+
+                // Commit change to database
                 await _db.SaveChangesAsync();
             }
             catch (Exception ex) {
@@ -152,6 +187,7 @@ namespace ODataExamples.API.Controllers
                 _tracker.TrackException(ex);
                 return InternalServerError(ex);
             }
+            // Return updated address record to caller
             return Updated(dbAddress);
         }
 
@@ -175,15 +211,24 @@ namespace ODataExamples.API.Controllers
         [HttpPut]
         [ODataRoute("addresses({id})")]
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PutCustomerAddress([FromODataUri] int id, [FromBody] Address address) {
+        public async Task<IHttpActionResult> Put([FromODataUri] int id, [FromBody] Address address) {
 
+            // Attempt to find existing addresss
             var dbAddress = await _db.Addresses.FindAsync(id);
             if (dbAddress == null) {
+                // Requested address not found, return 404
                 return NotFound();
             }
 
             try {
+                // Update tattler values (just for illustration - tie in your authorized claim token for user)
+                address.last_updated_datetime = DateTime.UtcNow;
+                address.last_updated_by = "OData Examples API";
+
+                // Replace customer data
                 dbAddress = address;
+
+                // Commit change to database
                 await _db.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException ex) {
@@ -197,6 +242,7 @@ namespace ODataExamples.API.Controllers
                 _tracker.TrackException(ex);
                 return InternalServerError(ex);
             }
+            // Return updated customer to caller
             return Updated(dbAddress);
         }
         #endregion
@@ -217,12 +263,20 @@ namespace ODataExamples.API.Controllers
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> DeleteCustomerAddress([FromODataUri] int id) {
             try {
+                // Attempt to find existing address
                 var dbCustomer = await _db.Addresses.FindAsync(id);
                 if (dbCustomer == null) {
+                    // Requested address not found, return 404
                     return NotFound();
                 }
+
+                // Remove address record
                 _db.Addresses.Remove(dbCustomer);
+
+                // Commit change to database
                 await _db.SaveChangesAsync();
+
+                // Return successful deletion code (204)
                 return StatusCode(HttpStatusCode.NoContent);
             }
             catch (Exception ex) {
