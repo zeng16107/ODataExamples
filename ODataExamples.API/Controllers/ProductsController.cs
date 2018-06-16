@@ -96,7 +96,7 @@ namespace ODataExamples.API.Controllers
         /// <response code="409">Conflict</response>
         [EnableQuery]
         [HttpPost]
-        [ODataRoute("orders")]
+        [ODataRoute("products")]
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> Post([FromBody] Product product) {
             try{

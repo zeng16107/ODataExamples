@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ODataExamples.API", "ODataE
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ODataExamples.Repository", "ODataExamples.Repository\ODataExamples.Repository.csproj", "{917DCB19-D768-4243-A5AD-77181BF7096C}"
 EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "ODataExamples.Database", "ODataExamples.Database\ODataExamples.Database.sqlproj", "{13925085-9BBB-4F5F-85EC-2D19021A8207}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,12 @@ Global
 		{917DCB19-D768-4243-A5AD-77181BF7096C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{917DCB19-D768-4243-A5AD-77181BF7096C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{917DCB19-D768-4243-A5AD-77181BF7096C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{13925085-9BBB-4F5F-85EC-2D19021A8207}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13925085-9BBB-4F5F-85EC-2D19021A8207}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13925085-9BBB-4F5F-85EC-2D19021A8207}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{13925085-9BBB-4F5F-85EC-2D19021A8207}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13925085-9BBB-4F5F-85EC-2D19021A8207}.Release|Any CPU.Build.0 = Release|Any CPU
+		{13925085-9BBB-4F5F-85EC-2D19021A8207}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

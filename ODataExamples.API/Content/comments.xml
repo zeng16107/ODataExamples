@@ -4,6 +4,26 @@
         <name>ODataExamples.API</name>
     </assembly>
     <members>
+        <member name="T:ODataExamples.API.Classes.EventHelper">
+            <summary>
+              Manage Event Grid operations
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ODataExamples.API.Classes.EventHelper.PublishEventAsync(System.String,System.Object)">
+            <summary>
+              Handle send to event grid topic
+            </summary>
+            <param name="eventTopic"></param>
+            <param name="eventData"></param>
+            <returns></returns>
+        </member>
+        <member name="T:ODataExamples.API.Classes.GridEvent`1">
+            <summary>
+              Event data class
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
         <member name="T:ODataExamples.API.Classes.ReferenceHelper">
             <summary>
             Assist in created assocation relationship references
@@ -199,6 +219,7 @@
             <returns></returns>
         </member>
         <member name="T:ODataExamples.API.Controllers.OrdersController">
+            <inheritdoc />
             <summary>
             Handles operations related to Customer Order data
             </summary>

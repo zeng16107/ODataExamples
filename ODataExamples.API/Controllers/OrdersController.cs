@@ -18,6 +18,7 @@ using ODataExamples.Repository.Model;
 
 namespace ODataExamples.API.Controllers
 {
+    /// <inheritdoc />
     /// <summary>
     /// Handles operations related to Customer Order data
     /// </summary>
@@ -124,6 +125,10 @@ namespace ODataExamples.API.Controllers
                 // Commit creation to database
                 await _db.SaveChangesAsync();
 
+                // Send new order to event grid for subscriber processing
+                var events = new EventHelper();
+                await events.PublishEventAsync("POST: Order", order);
+
                 // Return newly added order to caller
                 return Created(order);
             }
@@ -174,6 +179,10 @@ namespace ODataExamples.API.Controllers
 
                 // Commit change to database
                 await _db.SaveChangesAsync();
+
+                // Send updated order to event grid for subscriber processing
+                var events = new EventHelper();
+                await events.PublishEventAsync("PATCH: Order", dbOrder);
             }
             catch (Exception ex) {
                 //Send exception detail to insights
@@ -222,6 +231,10 @@ namespace ODataExamples.API.Controllers
 
                 // Commit change to database
                 await _db.SaveChangesAsync();
+
+                // Send updated order to event grid for subscriber processing
+                var events = new EventHelper();
+                await events.PublishEventAsync("PUT: Order", dbOrder);
             }
             catch (DbUpdateConcurrencyException ex) {
                 if (!_db.Customers.Any(c => c.id == id)) {
@@ -266,6 +279,10 @@ namespace ODataExamples.API.Controllers
 
                 // Commit change to database
                 await _db.SaveChangesAsync();
+
+                // Send deleted order id to event grid for subscriber processing
+                var events = new EventHelper();
+                await events.PublishEventAsync("PUT: Order", dbOrder.id);
 
                 // Return successful deletion code (204)
                 return StatusCode(HttpStatusCode.NoContent);
