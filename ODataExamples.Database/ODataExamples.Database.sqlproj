@@ -60,7 +60,6 @@
     <Folder Include="Comparisons" />
     <Folder Include="dbo\" />
     <Folder Include="dbo\Tables\" />
-    <Folder Include="Security\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Comparisons\SchemaCompare.scmp" />
@@ -80,7 +79,5 @@
     <Build Include="dbo\Tables\CustomerAddress.sql" />
     <Build Include="dbo\Tables\Customer.sql" />
     <Build Include="dbo\Tables\Address.sql" />
-    <Build Include="Security\odatasamples.sql" />
-    <Build Include="Security\RoleMemberships.sql" />
   </ItemGroup>
 </Project>

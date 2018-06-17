@@ -13,11 +13,12 @@ namespace ODataExamples.Repository.Model
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class ODataSamplesEntities : DbContext
+    public partial class ODataEntities : DbContext
     {
-        public ODataSamplesEntities()
-            : base("name=ODataSamplesEntities")
+        public ODataEntities()
+            : base("name=ODataEntities")
         {
+            this.Configuration.LazyLoadingEnabled = false;
         }
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

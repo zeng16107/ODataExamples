@@ -17,10 +17,10 @@ namespace ODataExamples.Repository.Model
         public int id { get; set; }
         public int product_id { get; set; }
         public string image_url { get; set; }
-        public string inserted_by { private get; set; }
-        public System.DateTime inserted_datetime { private get; set; }
-        public string last_updated_by { private get; set; }
-        public System.DateTime last_updated_datetime { private get; set; }
+        public string inserted_by { get; set; }
+        public System.DateTime inserted_datetime { get; set; }
+        public string last_updated_by { get; set; }
+        public System.DateTime last_updated_datetime { get; set; }
     
         public virtual Product Product { get; set; }
     }

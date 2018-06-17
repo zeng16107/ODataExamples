@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="ODataSamplesModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="ODataModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Address">
           <Key>
             <PropertyRef Name="id" />
@@ -345,7 +345,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="ODataSamplesModelStoreContainer">
+        <EntityContainer Name="ODataModelStoreContainer">
           <EntitySet Name="Address" EntityType="Self.Address" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Customer" EntityType="Self.Customer" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CustomerAddress" EntityType="Self.CustomerAddress" Schema="dbo" store:Type="Tables" />
@@ -420,7 +420,7 @@
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="ODataSamplesModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="ODataModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="Address">
           <Key>
             <PropertyRef Name="id" />
@@ -432,10 +432,10 @@
           <Property Name="city" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="statecode" Type="String" MaxLength="2" FixedLength="true" Unicode="false" Nullable="false" />
           <Property Name="zipcode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="inserted_by" Type="String" Nullable="false" a:GetterAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" MaxLength="50" Unicode="true" FixedLength="false" />
-          <Property Name="inserted_datetime" Type="DateTime" Nullable="false" Precision="7" a:GetterAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
-          <Property Name="last_updated_by" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" a:GetterAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
-          <Property Name="last_updated_datetime" Type="DateTime" Nullable="false" Precision="7" a:GetterAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+          <Property Name="inserted_by" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="inserted_datetime" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="last_updated_by" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="last_updated_datetime" Type="DateTime" Nullable="false" Precision="7" />
           <NavigationProperty Name="Customers" Relationship="Self.CustomerAddress" FromRole="Address" ToRole="Customer" />
         </EntityType>
         <EntityType Name="Customer">
@@ -447,10 +447,10 @@
           <Property Name="last_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="suffix" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
           <Property Name="email_address" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="inserted_by" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" a:GetterAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
-          <Property Name="inserted_datetime" Type="DateTime" Nullable="false" Precision="7" a:GetterAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
-          <Property Name="last_updated_by" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" a:GetterAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
-          <Property Name="last_updated_datetime" Type="DateTime" Nullable="false" Precision="7" a:GetterAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+          <Property Name="inserted_by" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="inserted_datetime" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="last_updated_by" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="last_updated_datetime" Type="DateTime" Nullable="false" Precision="7" />
           <NavigationProperty Name="Orders" Relationship="Self.FK_Order_Customer" FromRole="Customer" ToRole="Order" />
           <NavigationProperty Name="Addresses" Relationship="Self.CustomerAddress" FromRole="Customer" ToRole="Address" />
           <NavigationProperty Name="Phones" Relationship="Self.CustomerPhone" FromRole="Customer" ToRole="Phone" />
@@ -463,10 +463,10 @@
           <Property Name="customer_id" Type="Int32" Nullable="false" />
           <Property Name="order_number" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="order_status" Type="Int32" Nullable="false" />
-          <Property Name="inserted_by" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" a:GetterAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
-          <Property Name="inserted_datetime" Type="DateTime" Nullable="false" Precision="7" a:GetterAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
-          <Property Name="last_updated_by" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" a:GetterAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
-          <Property Name="last_updated_datetime" Type="DateTime" Nullable="false" Precision="7" a:GetterAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+          <Property Name="inserted_by" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="inserted_datetime" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="last_updated_by" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="last_updated_datetime" Type="DateTime" Nullable="false" Precision="7" />
           <NavigationProperty Name="Customer" Relationship="Self.FK_Order_Customer" FromRole="Order" ToRole="Customer" />
           <NavigationProperty Name="OrderDetails" Relationship="Self.FK_OrderDetail_Order" FromRole="Order" ToRole="OrderDetail" />
         </EntityType>
@@ -479,10 +479,10 @@
           <Property Name="product_id" Type="Int32" Nullable="false" />
           <Property Name="quantity" Type="Int32" Nullable="false" />
           <Property Name="price" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
-          <Property Name="inserted_by" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" a:GetterAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
-          <Property Name="inserted_datetime" Type="DateTime" Nullable="false" Precision="7" a:GetterAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
-          <Property Name="last_updated_by" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" a:GetterAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
-          <Property Name="last_updated_datetime" Type="DateTime" Nullable="false" Precision="7" a:GetterAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+          <Property Name="inserted_by" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="inserted_datetime" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="last_updated_by" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="last_updated_datetime" Type="DateTime" Nullable="false" Precision="7" />
           <NavigationProperty Name="Order" Relationship="Self.FK_OrderDetail_Order" FromRole="OrderDetail" ToRole="Order" />
           <NavigationProperty Name="Product" Relationship="Self.FK_OrderDetail_Product" FromRole="OrderDetail" ToRole="Product" />
         </EntityType>
@@ -493,10 +493,10 @@
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="phone_type" Type="Int32" Nullable="false" />
           <Property Name="phone_number" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
-          <Property Name="inserted_by" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" a:GetterAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
-          <Property Name="inserted_datetime" Type="DateTime" Nullable="false" Precision="7" a:GetterAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
-          <Property Name="last_updated_by" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" a:GetterAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
-          <Property Name="last_updated_datetime" Type="DateTime" Nullable="false" Precision="7" a:GetterAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+          <Property Name="inserted_by" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="inserted_datetime" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="last_updated_by" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="last_updated_datetime" Type="DateTime" Nullable="false" Precision="7" />
           <NavigationProperty Name="Customers" Relationship="Self.CustomerPhone" FromRole="Phone" ToRole="Customer" />
         </EntityType>
         <EntityType Name="Product">
@@ -511,10 +511,10 @@
           <Property Name="description" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="upc" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
           <Property Name="price" Type="Decimal" Precision="18" Scale="0" />
-          <Property Name="inserted_by" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" a:GetterAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
-          <Property Name="inserted_datetime" Type="DateTime" Nullable="false" Precision="7" a:GetterAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
-          <Property Name="last_updated_by" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" a:GetterAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
-          <Property Name="last_updated_datetime" Type="DateTime" Nullable="false" Precision="7" a:GetterAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+          <Property Name="inserted_by" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="inserted_datetime" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="last_updated_by" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="last_updated_datetime" Type="DateTime" Nullable="false" Precision="7" />
           <NavigationProperty Name="OrderDetails" Relationship="Self.FK_OrderDetail_Product" FromRole="Product" ToRole="OrderDetail" />
           <NavigationProperty Name="ProductBrand" Relationship="Self.FK_Product_ProductBrand" FromRole="Product" ToRole="ProductBrand" />
           <NavigationProperty Name="ProductType" Relationship="Self.FK_Product_ProductType" FromRole="Product" ToRole="ProductType" />
@@ -528,10 +528,10 @@
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="product_brand" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="inserted_by" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" a:GetterAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
-          <Property Name="inserted_datetime" Type="DateTime" Nullable="false" Precision="7" a:GetterAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
-          <Property Name="last_updated_by" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" a:GetterAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
-          <Property Name="last_updated_datetime" Type="DateTime" Nullable="false" Precision="7" a:GetterAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+          <Property Name="inserted_by" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="inserted_datetime" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="last_updated_by" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="last_updated_datetime" Type="DateTime" Nullable="false" Precision="7" />
           <NavigationProperty Name="Products" Relationship="Self.FK_Product_ProductBrand" FromRole="ProductBrand" ToRole="Product" />
         </EntityType>
         <EntityType Name="ProductImage">
@@ -541,10 +541,10 @@
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="product_id" Type="Int32" Nullable="false" />
           <Property Name="image_url" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="inserted_by" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" a:GetterAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
-          <Property Name="inserted_datetime" Type="DateTime" Nullable="false" Precision="7" a:GetterAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
-          <Property Name="last_updated_by" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" a:GetterAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
-          <Property Name="last_updated_datetime" Type="DateTime" Nullable="false" Precision="7" a:GetterAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+          <Property Name="inserted_by" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="inserted_datetime" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="last_updated_by" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="last_updated_datetime" Type="DateTime" Nullable="false" Precision="7" />
           <NavigationProperty Name="Product" Relationship="Self.FK_ProductImage_Product" FromRole="ProductImage" ToRole="Product" />
         </EntityType>
         <EntityType Name="ProductOverview">
@@ -554,10 +554,10 @@
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="product_id" Type="Int32" />
           <Property Name="overview_description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="inserted_by" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" a:GetterAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
-          <Property Name="inserted_datetime" Type="DateTime" Nullable="false" Precision="7" a:GetterAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
-          <Property Name="last_updated_by" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" a:GetterAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
-          <Property Name="last_updated_datetime" Type="DateTime" Nullable="false" Precision="7" a:GetterAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+          <Property Name="inserted_by" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="inserted_datetime" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="last_updated_by" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="last_updated_datetime" Type="DateTime" Nullable="false" Precision="7" />
           <NavigationProperty Name="Product" Relationship="Self.FK_ProductOverview_Product" FromRole="ProductOverview" ToRole="Product" />
         </EntityType>
         <EntityType Name="ProductType">
@@ -566,10 +566,10 @@
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" />
           <Property Name="product_type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="inserted_by" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" a:GetterAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
-          <Property Name="inserted_datetime" Type="DateTime" Nullable="false" Precision="7" a:GetterAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
-          <Property Name="last_updated_by" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" a:GetterAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
-          <Property Name="last_updated_datetime" Type="DateTime" Nullable="false" Precision="7" a:GetterAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+          <Property Name="inserted_by" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="inserted_datetime" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="last_updated_by" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="last_updated_datetime" Type="DateTime" Nullable="false" Precision="7" />
           <NavigationProperty Name="Products" Relationship="Self.FK_Product_ProductType" FromRole="ProductType" ToRole="Product" />
         </EntityType>
         <EntityType Name="Specification">
@@ -580,10 +580,10 @@
           <Property Name="product_id" Type="Int32" Nullable="false" />
           <Property Name="spec_type" Type="Int32" Nullable="false" />
           <Property Name="spec_detail" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="inserted_by" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" a:GetterAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
-          <Property Name="inserted_datetime" Type="DateTime" Nullable="false" Precision="7" a:GetterAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
-          <Property Name="last_updated_by" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" a:GetterAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
-          <Property Name="last_updated_datetime" Type="DateTime" Nullable="false" Precision="7" a:GetterAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+          <Property Name="inserted_by" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="inserted_datetime" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="last_updated_by" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="last_updated_datetime" Type="DateTime" Nullable="false" Precision="7" />
           <NavigationProperty Name="Product" Relationship="Self.FK_Specification_Product" FromRole="Specification" ToRole="Product" />
           <NavigationProperty Name="SpecificationType" Relationship="Self.FK_Specification_SpecificationType" FromRole="Specification" ToRole="SpecificationType" />
         </EntityType>
@@ -593,10 +593,10 @@
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="description" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="inserted_by" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" a:GetterAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
-          <Property Name="inserted_datetime" Type="DateTime" Nullable="false" Precision="7" a:GetterAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
-          <Property Name="last_updated_by" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" a:GetterAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
-          <Property Name="last_updated_datetime" Type="DateTime" Nullable="false" Precision="7" a:GetterAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+          <Property Name="inserted_by" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="inserted_datetime" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="last_updated_by" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="last_updated_datetime" Type="DateTime" Nullable="false" Precision="7" />
           <NavigationProperty Name="Specifications" Relationship="Self.FK_Specification_SpecificationType" FromRole="SpecificationType" ToRole="Specification" />
         </EntityType>
         <Association Name="FK_Order_Customer">
@@ -727,7 +727,7 @@
           <End Role="Customer" Type="Self.Customer" Multiplicity="*" />
           <End Role="Phone" Type="Self.Phone" Multiplicity="*" />
         </Association>
-        <EntityContainer Name="ODataSamplesEntities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="ODataEntities" annotation:LazyLoadingEnabled="false">
           <EntitySet Name="Addresses" EntityType="Self.Address" />
           <EntitySet Name="Customers" EntityType="Self.Customer" />
           <EntitySet Name="Orders" EntityType="Self.Order" />
@@ -794,9 +794,9 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="ODataSamplesModelStoreContainer" CdmEntityContainer="ODataSamplesEntities">
+        <EntityContainerMapping StorageEntityContainer="ODataModelStoreContainer" CdmEntityContainer="ODataEntities">
           <EntitySetMapping Name="Addresses">
-            <EntityTypeMapping TypeName="ODataSamplesModel.Address">
+            <EntityTypeMapping TypeName="ODataModel.Address">
               <MappingFragment StoreEntitySet="Address">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="address_type" ColumnName="address_type" />
@@ -813,7 +813,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Customers">
-            <EntityTypeMapping TypeName="ODataSamplesModel.Customer">
+            <EntityTypeMapping TypeName="ODataModel.Customer">
               <MappingFragment StoreEntitySet="Customer">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="first_name" ColumnName="first_name" />
@@ -828,7 +828,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Orders">
-            <EntityTypeMapping TypeName="ODataSamplesModel.Order">
+            <EntityTypeMapping TypeName="ODataModel.Order">
               <MappingFragment StoreEntitySet="Order">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="customer_id" ColumnName="customer_id" />
@@ -842,7 +842,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="OrderDetails">
-            <EntityTypeMapping TypeName="ODataSamplesModel.OrderDetail">
+            <EntityTypeMapping TypeName="ODataModel.OrderDetail">
               <MappingFragment StoreEntitySet="OrderDetail">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="order_id" ColumnName="order_id" />
@@ -857,7 +857,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Phones">
-            <EntityTypeMapping TypeName="ODataSamplesModel.Phone">
+            <EntityTypeMapping TypeName="ODataModel.Phone">
               <MappingFragment StoreEntitySet="Phone">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="phone_type" ColumnName="phone_type" />
@@ -870,15 +870,15 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Products">
-            <EntityTypeMapping TypeName="ODataSamplesModel.Product">
+            <EntityTypeMapping TypeName="ODataModel.Product">
               <MappingFragment StoreEntitySet="Product">
-                <ScalarProperty Name="upc" ColumnName="upc" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="type" ColumnName="type" />
                 <ScalarProperty Name="category" ColumnName="category" />
                 <ScalarProperty Name="brand" ColumnName="brand" />
                 <ScalarProperty Name="name" ColumnName="name" />
                 <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="upc" ColumnName="upc" />
                 <ScalarProperty Name="price" ColumnName="price" />
                 <ScalarProperty Name="inserted_by" ColumnName="inserted_by" />
                 <ScalarProperty Name="inserted_datetime" ColumnName="inserted_datetime" />
@@ -888,7 +888,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="ProductBrands">
-            <EntityTypeMapping TypeName="ODataSamplesModel.ProductBrand">
+            <EntityTypeMapping TypeName="ODataModel.ProductBrand">
               <MappingFragment StoreEntitySet="ProductBrand">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="product_brand" ColumnName="product_brand" />
@@ -900,7 +900,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="ProductImages">
-            <EntityTypeMapping TypeName="ODataSamplesModel.ProductImage">
+            <EntityTypeMapping TypeName="ODataModel.ProductImage">
               <MappingFragment StoreEntitySet="ProductImage">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="product_id" ColumnName="product_id" />
@@ -913,7 +913,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="ProductOverviews">
-            <EntityTypeMapping TypeName="ODataSamplesModel.ProductOverview">
+            <EntityTypeMapping TypeName="ODataModel.ProductOverview">
               <MappingFragment StoreEntitySet="ProductOverview">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="product_id" ColumnName="product_id" />
@@ -926,7 +926,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="ProductTypes">
-            <EntityTypeMapping TypeName="ODataSamplesModel.ProductType">
+            <EntityTypeMapping TypeName="ODataModel.ProductType">
               <MappingFragment StoreEntitySet="ProductType">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="product_type" ColumnName="product_type" />
@@ -938,7 +938,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Specifications">
-            <EntityTypeMapping TypeName="ODataSamplesModel.Specification">
+            <EntityTypeMapping TypeName="ODataModel.Specification">
               <MappingFragment StoreEntitySet="Specification">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="product_id" ColumnName="product_id" />
@@ -952,7 +952,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="SpecificationTypes">
-            <EntityTypeMapping TypeName="ODataSamplesModel.SpecificationType">
+            <EntityTypeMapping TypeName="ODataModel.SpecificationType">
               <MappingFragment StoreEntitySet="SpecificationType">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="description" ColumnName="description" />
@@ -963,7 +963,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <AssociationSetMapping Name="CustomerAddress" TypeName="ODataSamplesModel.CustomerAddress" StoreEntitySet="CustomerAddress">
+          <AssociationSetMapping Name="CustomerAddress" TypeName="ODataModel.CustomerAddress" StoreEntitySet="CustomerAddress">
             <EndProperty Name="Address">
               <ScalarProperty Name="id" ColumnName="address_id" />
             </EndProperty>
@@ -971,7 +971,7 @@
               <ScalarProperty Name="id" ColumnName="customer_id" />
             </EndProperty>
           </AssociationSetMapping>
-          <AssociationSetMapping Name="CustomerPhone" TypeName="ODataSamplesModel.CustomerPhone" StoreEntitySet="CustomerPhone">
+          <AssociationSetMapping Name="CustomerPhone" TypeName="ODataModel.CustomerPhone" StoreEntitySet="CustomerPhone">
             <EndProperty Name="Customer">
               <ScalarProperty Name="id" ColumnName="customer_id" />
             </EndProperty>

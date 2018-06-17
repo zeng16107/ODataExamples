@@ -54,83 +54,82 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Model\Address.cs">
-      <DependentUpon>ODataSamplesModel.tt</DependentUpon>
+      <DependentUpon>ODataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Customer.cs">
-      <DependentUpon>ODataSamplesModel.tt</DependentUpon>
+      <DependentUpon>ODataModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\ODataSamplesModel.Context.cs">
+    <Compile Include="Model\ODataModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>ODataSamplesModel.Context.tt</DependentUpon>
+      <DependentUpon>ODataModel.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\ODataSamplesModel.cs">
+    <Compile Include="Model\ODataModel.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>ODataSamplesModel.tt</DependentUpon>
+      <DependentUpon>ODataModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\ODataSamplesModel.Designer.cs">
+    <Compile Include="Model\ODataModel.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>ODataSamplesModel.edmx</DependentUpon>
+      <DependentUpon>ODataModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="Model\Order.cs">
-      <DependentUpon>ODataSamplesModel.tt</DependentUpon>
+      <DependentUpon>ODataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\OrderDetail.cs">
-      <DependentUpon>ODataSamplesModel.tt</DependentUpon>
+      <DependentUpon>ODataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Phone.cs">
-      <DependentUpon>ODataSamplesModel.tt</DependentUpon>
+      <DependentUpon>ODataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Product.cs">
-      <DependentUpon>ODataSamplesModel.tt</DependentUpon>
+      <DependentUpon>ODataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\ProductBrand.cs">
-      <DependentUpon>ODataSamplesModel.tt</DependentUpon>
+      <DependentUpon>ODataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\ProductImage.cs">
-      <DependentUpon>ODataSamplesModel.tt</DependentUpon>
+      <DependentUpon>ODataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\ProductOverview.cs">
-      <DependentUpon>ODataSamplesModel.tt</DependentUpon>
+      <DependentUpon>ODataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\ProductType.cs">
-      <DependentUpon>ODataSamplesModel.tt</DependentUpon>
+      <DependentUpon>ODataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Specification.cs">
-      <DependentUpon>ODataSamplesModel.tt</DependentUpon>
+      <DependentUpon>ODataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\SpecificationType.cs">
-      <DependentUpon>ODataSamplesModel.tt</DependentUpon>
+      <DependentUpon>ODataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <EntityDeploy Include="Model\ODataSamplesModel.edmx">
+    <EntityDeploy Include="Model\ODataModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>ODataSamplesModel.Designer.cs</LastGenOutput>
+      <LastGenOutput>ODataModel.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <None Include="Model\ODataSamplesModel.edmx.diagram">
-      <DependentUpon>ODataSamplesModel.edmx</DependentUpon>
+    <None Include="Model\ODataModel.edmx.diagram">
+      <DependentUpon>ODataModel.edmx</DependentUpon>
     </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <Content Include="Model\ODataSamplesModel.Context.tt">
+    <Content Include="Model\ODataModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>ODataSamplesModel.edmx</DependentUpon>
-      <LastGenOutput>ODataSamplesModel.Context.cs</LastGenOutput>
+      <DependentUpon>ODataModel.edmx</DependentUpon>
+      <LastGenOutput>ODataModel.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="Model\ODataSamplesModel.tt">
+    <Content Include="Model\ODataModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>ODataSamplesModel.edmx</DependentUpon>
-      <LastGenOutput>ODataSamplesModel.cs</LastGenOutput>
+      <DependentUpon>ODataModel.edmx</DependentUpon>
+      <LastGenOutput>ODataModel.cs</LastGenOutput>
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -24,7 +24,7 @@ namespace ODataExamples.API.Controllers
     public class ContactsController : ODataController
     {
         // EF Model for database interation(s)
-        private readonly ODataSamplesEntities _db = new ODataSamplesEntities();
+        private readonly ODataEntities _db = new ODataEntities();
 
         // Telemetry tracker to write exceptions to App Insights
         private readonly TelemetryTracker _tracker = new TelemetryTracker();
