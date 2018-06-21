@@ -25,6 +25,7 @@ namespace ODataExamples.API
             apiBuilder.EntitySet<Phone>("phones");
             apiBuilder.EntitySet<Order>("orders");
             apiBuilder.EntitySet<Product>("products");
+            apiBuilder.EntitySet<ProductBrand>("productbrands");
 
             // Apply OData model/mappings
             config.Count().Filter().OrderBy().Expand().Select().MaxTop(null);
