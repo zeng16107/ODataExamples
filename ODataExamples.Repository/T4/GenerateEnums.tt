@@ -1,0 +1,23 @@
+﻿<#@include file="DbEnums.ttinclude" #>
+<#
+  var configFilePath = @"..\app.config";
+ 
+  var enums = new []
+  {
+    new EnumEntry
+      ("Product Brands", "ODataEntities", "dbo", "ProductBrand", "id", "product_brand", "product_brand")
+      { EnumName = "ProductBrandEnum", ValueRange = new Tuple<long, long>(0, 999) },
+ 
+    new EnumEntry
+      ("Product Types", "ODataEntities", "dbo", "ProductType", "id", "product_type", "product_type")
+      { EnumName = "ProductTypeEnum", ValueRange = new Tuple<long, long>(0, 999) },
+ 
+    new EnumEntry
+      ("Specification Types", "ODataEntities", "dbo", "SPecificationType", "id", "description", "description")
+      { EnumName = "SpecificationEnum", ValueRange = new Tuple<long, long>(0, 999) },
+  };
+ 
+  var code = this.GenerateEnums(configFilePath, enums);
+ 
+  return code;
+#>
