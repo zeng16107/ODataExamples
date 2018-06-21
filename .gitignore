@@ -261,3 +261,4 @@ __pycache__/
 *.pyc
 /ODataExamples.API/Properties/PublishProfiles/ODataExamples - Web Deploy.pubxml
 /ODataExamples.API/Properties/PublishProfiles/rw-ODataExamplesAPI - Web Deploy.pubxml
+/ODataExamples.API/Properties/PublishProfiles/ODataExamplesAPI - Web Deploy.pubxml
